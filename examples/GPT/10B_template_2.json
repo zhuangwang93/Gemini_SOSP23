@@ -7,7 +7,7 @@
     "gpt_config": {
         "max_position_embeddings": 514,
         "num_attention_heads": 40,
-        "num_hidden_layers": 48,
+        "num_hidden_layers": 47,
         "hidden_size": 2560,
         "intermediate_size": 10240,
         "gradient_checkpointing": true,
