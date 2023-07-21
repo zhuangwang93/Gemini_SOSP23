@@ -42,25 +42,26 @@ class etcdKey():
     agent_ips_folder = "/agent/ip"
 
 
+def get_ip_address(ifname):
+    import socket, fcntl, struct
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', bytes(ifname[:15], 'utf-8'))
+    )[20:24])
+    
 
 def sync_code(ips_list, mode = "init"):
-    def get_ip_address(ifname):
-            import socket, fcntl, struct
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            return socket.inet_ntoa(fcntl.ioctl(
-                s.fileno(),
-                0x8915,  # SIOCGIFADDR
-                struct.pack('256s', bytes(ifname[:15], 'utf-8'))
-            )[20:24])
     local_ip = get_ip_address("eth0")
+    gemini_parent_dir = os.path.join(os.path.expanduser('~'), "zhuang")
+    gemini_github = "https://github.com/zhuangwang93/Gemini.git"
 
     for ip in ips_list:
         if ip == local_ip:
             continue
-        gemini_parent_dir = os.path.join(os.path.expanduser('~'), "zhuang")
-        gemini_github = "https://github.com/zhuangwang93/Gemini.git"
         if mode == "init":
-            sync_code_command = f"cd {gemini_parent_dir}; git clone {gemini_github}"
+            sync_code_command = f"cd {gemini_parent_dir}; git clone {gemini_github}; cd Gemini; pip3 install -e ."
         elif mode == "sync":
             gemini_dir = os.path.join(gemini_parent_dir, "Gemini")
             sync_code_command = f"cd {gemini_dir}; git pull {gemini_github}"
@@ -72,9 +73,13 @@ def sync_code(ips_list, mode = "init"):
 
 
 def setup_instances(ips_list):
+    gemini_dir = os.path.join(os.path.expanduser('~'), "zhuang/Gemini")
     for ip in ips_list:
         setup_command = f"""
-            pip3 install transformers -U; mkdir /tmp/ramdisk; sudo mount -t tmpfs -o size=128G ramdisk /tmp/ramdisk; mount | tail -n 1
+            cd {gemini_dir}; pip3 install -e .; 
+            pip3 install transformers -U; 
+            mkdir /tmp/ramdisk; 
+            sudo mount -t tmpfs -o size=128G ramdisk /tmp/ramdisk; mount | tail -n 1
         """
         print(f"********{ip} update dependency********")
         run_update_command = f"ssh -T {ip} '{setup_command}'"

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-HOSTFILE=hostfile
+HOSTFILE="../hostfile"
 TRAIN_SCRIPT=pretrain_gpt.py
 TRAIN_CONFIG="
-40B_template.json
+10B_template_2.json
 "
 
 JOB_NAME=GPT2
@@ -27,7 +27,7 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --comm_profile_steps 12 \
 --jump_profile_lines 8 \
 --enable_comm_profile \
---snapshot_mode interleave \
+--snapshot_mode none \
 --network_bandwidth 60 \
 --snapshot_buffer_size 16 \
 --span_threshold 100 \
