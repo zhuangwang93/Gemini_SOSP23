@@ -43,20 +43,30 @@ class etcdKey():
 
 
 
-def sync_code(ips_list):
+def sync_code(ips_list, mode = "init"):
+    def get_ip_address(ifname):
+            import socket, fcntl, struct
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            return socket.inet_ntoa(fcntl.ioctl(
+                s.fileno(),
+                0x8915,  # SIOCGIFADDR
+                struct.pack('256s', bytes(ifname[:15], 'utf-8'))
+            )[20:24])
+    local_ip = get_ip_address("eth0")
+
     for ip in ips_list:
-        gemini_dir = "~/zhuang/Gemini"
+        if ip == local_ip:
+            continue
+        gemini_parent_dir = os.path.join(os.path.expanduser('~'), "zhuang")
         gemini_github = "https://github.com/zhuangwang93/Gemini.git"
-        if not os.path.exists(gemini_dir):
-            os.makedirs(gemini_dir)
-            sync_code_command = f"""
-                cd {gemini_dir}; git clone {gemini_github}
-            """
-        else:
-            sync_code_command = f"""
-                cd {gemini_dir}; git pull {gemini_github}
-            """
+        if mode == "init":
+            sync_code_command = f"cd {gemini_parent_dir}; git clone {gemini_github}"
+        elif mode == "sync":
+            gemini_dir = os.path.join(gemini_parent_dir, "Gemini")
+            sync_code_command = f"cd {gemini_dir}; git pull {gemini_github}"
+        
         print(f"********{ip} sync code********")
+        print(sync_code_command)
         run_sync_command = f"ssh -T {ip} '{sync_code_command}'"
         subprocess.call(run_sync_command, shell=True)
 

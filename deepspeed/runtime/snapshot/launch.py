@@ -160,18 +160,18 @@ if __name__ == "__main__":
                         help='number of etcd clients')
     parser.add_argument('--gpus_per_instance', '-g', type=int, default=8,
                         help='number of GPUs in each instance')
-    parser.add_argument('--example-dir', '-e', type=str, default=os.path.expanduser('~/zhuang/DeepSpeedExamples/bing_bert'),
+    parser.add_argument('--example-dir', '-e', type=str, default=os.path.expanduser('~/zhuang/Gemini/examples'),
                         help='directory of deepspeed examples')
     parser.add_argument('--snapshot-dir', '-s', type=str, default=os.path.expanduser('/tmp/ramdisk/snapshot'),
                         help='directory of deepspeed snapshot')
     args = parser.parse_args()
     
     launch_agent = TraingLaunch(args)
-    if args.mode == "code":
-        sync_code(launch_agent.get_ips_list())
-    elif args.mode == "setup":
+    if args.mode == "init":
         sync_code(launch_agent.get_ips_list())
         setup_instances(launch_agent.get_ips_list())
+    elif args.mode == "sync":
+        sync_code(launch_agent.get_ips_list(), mode = "sync")
     elif args.mode == "etcd":
         launch_agent.run_etcd(args.etcd_clients)
     elif args.mode == "start":
@@ -183,4 +183,4 @@ if __name__ == "__main__":
     elif args.mode == "instances":
         launch_agent.generate_hostfile()
     else:
-        print("set the mode from ['code', 'setup', 'etcd', 'start', 'kill', 'instances']")
+        print("set the mode from ['init', 'sync', 'etcd', 'start', 'kill', 'instances']")
