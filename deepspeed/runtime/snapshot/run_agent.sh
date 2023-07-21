@@ -1,0 +1,1 @@
+taskset -c 40 python3 agent_etcd.py -r $1 --ranks $2 --init-mode --gpus-per-rank $3

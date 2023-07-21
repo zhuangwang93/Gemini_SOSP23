@@ -1,0 +1,1 @@
+mpirun --allow-run-as-root --mca oob_tcp_if_include eth0 --mca btl_tcp_if_include eth0 -np $1 --hostfile hostfile -x NCCL_SOCKET_IFNAME=eth0 -bind-to none -map-by slot -x NCCL_DEBUG=INFO -x LD_LIBRARY_PATH -x PATH -mca pml ob1 -mca btl ^openib python3 snapshot_recover.py

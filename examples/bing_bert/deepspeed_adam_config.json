@@ -1,0 +1,17 @@
+{
+  "train_micro_batch_size_per_gpu": 8,
+  "gradient_accumulation_steps": 1,
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 0.00015
+    }
+  },
+  "fp16": {
+    "enabled": true
+  },
+  "zero_optimization": {
+    "stage": 3,
+    "reduce_bucket_size": 2e9
+  }
+}
