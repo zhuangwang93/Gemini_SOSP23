@@ -233,7 +233,7 @@ class CommounicationProfiler():
                     total_comm_time += comm_time
                     last_end_event = end_event
 
-            # # f.write(" ")
+            f.write(" ")
             # # reducescatter event
             # comm_times.append("reducescatter:")
 

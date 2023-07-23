@@ -1172,6 +1172,7 @@ class DeepSpeedZeroOptimizer_Stage3(ZeROOptimizer):
                                                             self.dp_process_group)
         end = torch.cuda.Event(enable_timing=True)
         end.record(stream=self.__reduce_and_partition_stream)
+        self.__reduce_and_partition_stream.synchronize()
         comm_profiler.add_start_reducescatter_event(start)
         comm_profiler.add_end_reducescatter_event(end)
         
