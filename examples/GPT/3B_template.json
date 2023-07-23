@@ -1,7 +1,7 @@
 {
     "help": "3B config",
     "gradient_accumulation_steps": 1,
-    "train_micro_batch_size_per_gpu": 32,
+    "train_micro_batch_size_per_gpu": 40,
     "steps_per_print": 1,
     "prescale_gradients": false,
     "gpt_config": {
@@ -16,9 +16,8 @@
     },
     "zero_optimization": {
         "stage": 3,
-        "allgather_bucket_size": 2e9,
         "stage3_prefetch_bucket_size": 1e9,
-        "reduce_bucket_size": 2e9
+        "reduce_bucket_size": 4e9
     },
     "optimizer": {
         "type": "Adam",
