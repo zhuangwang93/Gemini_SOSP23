@@ -399,21 +399,21 @@ class PartitionedParameterCoordinator:
             with torch.cuda.stream(self.__allgather_stream):
                 handle = partitioned_params[0].all_gather_coalesced(partitioned_params)
 
-            # with torch.cuda.stream(self.__allgather_stream):
-            #     start = torch.cuda.Event(enable_timing=True)
-            #     start.record(stream=self.__allgather_stream)
-            #     handle = partitioned_params[0].all_gather_coalesced(partitioned_params)
-            #     end = torch.cuda.Event(enable_timing=True)
-            #     end.record(stream=self.__allgather_stream)
-            #     # use stream.synchronize() for accurate profiling. 
-            #     # We observe that stream.synchronize() can improve the iteration time
-            #     self.__allgather_stream.synchronize()
-            #     comm_profiler.add_start_allgather_event(start)
-            #     comm_profiler.add_end_allgather_event(end)
+            with torch.cuda.stream(self.__allgather_stream):
+                start = torch.cuda.Event(enable_timing=True)
+                start.record(stream=self.__allgather_stream)
+                handle = partitioned_params[0].all_gather_coalesced(partitioned_params)
+                end = torch.cuda.Event(enable_timing=True)
+                end.record(stream=self.__allgather_stream)
+                # use stream.synchronize() for accurate profiling. 
+                # We observe that stream.synchronize() can improve the iteration time
+                self.__allgather_stream.synchronize()
+                comm_profiler.add_start_allgather_event(start)
+                comm_profiler.add_end_allgather_event(end)
                 
-            # if snapshot_settings.is_snapshot_mode():
-            #     from deepspeed.runtime.snapshot.snapshot_comm import cpu_snapshot
-            #     cpu_snapshot.remote_snapshot(handle.get_handle(), self.__allgather_stream)
+            if snapshot_settings.is_snapshot_mode():
+                from deepspeed.runtime.snapshot.snapshot_comm import cpu_snapshot
+                cpu_snapshot.remote_snapshot(handle.get_handle(), self.__allgather_stream)
 
             for param in partitioned_params:
                 assert param.ds_status == ZeroParamStatus.INFLIGHT, param.ds_summary()

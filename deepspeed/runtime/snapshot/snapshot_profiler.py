@@ -206,18 +206,18 @@ class CommounicationProfiler():
         total_comm_time = 0
         with open(self.filename, 'a+') as f:
             # allgather event
-            # for start_event, end_event in zip(self.start_allgather_events, self.end_allgather_events):
-            #     comm_time = round(start_event.elapsed_time(end_event), 2)
-            #     comm_times.append(comm_time)
-            #     total_comm_time += comm_time
+            for start_event, end_event in zip(self.start_allgather_events, self.end_allgather_events):
+                comm_time = round(start_event.elapsed_time(end_event), 2)
+                comm_times.append(comm_time)
+                total_comm_time += comm_time
 
-            #     if last_end_event is None:
-            #         last_end_event = end_event
-            #         continue
-            #     else:
-            #         time_gap = last_end_event.elapsed_time(start_event)
-            #         f.write(str(round(time_gap, 1)) + " ")
-            #         last_end_event = end_event
+                if last_end_event is None:
+                    last_end_event = end_event
+                    continue
+                else:
+                    time_gap = last_end_event.elapsed_time(start_event)
+                    f.write(str(round(time_gap, 1)) + " ")
+                    last_end_event = end_event
 
             # allgather event
             # reverse the communication time and the idle time span. Cannot understand
