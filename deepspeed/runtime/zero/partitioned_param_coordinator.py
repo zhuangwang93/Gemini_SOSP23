@@ -396,8 +396,8 @@ class PartitionedParameterCoordinator:
                 self.__n_available_params += param.ds_numel
 
         if partitioned_params:            
-            with torch.cuda.stream(self.__allgather_stream):
-                handle = partitioned_params[0].all_gather_coalesced(partitioned_params)
+            # with torch.cuda.stream(self.__allgather_stream):
+            #     handle = partitioned_params[0].all_gather_coalesced(partitioned_params)
 
             with torch.cuda.stream(self.__allgather_stream):
                 start = torch.cuda.Event(enable_timing=True)
