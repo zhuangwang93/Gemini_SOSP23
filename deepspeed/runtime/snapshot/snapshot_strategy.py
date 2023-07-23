@@ -22,9 +22,11 @@ class SnapshotStrategy():
                     continue
 
                 gaps = line.strip().split(" ")
+                print("extract_data", gaps)
                 for i, gap in enumerate(gaps):
                     if i not in self.gaps:
                         self.gaps[i] = []
+                    print("extract_data", i, gap)
                     self.gaps[i].append(float(gap))
 
     
