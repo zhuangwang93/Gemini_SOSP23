@@ -195,7 +195,6 @@ class CommounicationProfiler():
 
         self.start_reducescatter_events = []
         self.end_reducescatter_events = []
-
         self.comm_gap_id = 0
 
 
