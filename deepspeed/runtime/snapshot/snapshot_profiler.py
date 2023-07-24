@@ -248,9 +248,8 @@ class CommounicationProfiler():
                     continue
 
                 time_gap = last_end_event.elapsed_time(start_event)
-                if time_gap < 0:
-                    time_gap = 0
-                f.write(str(round(time_gap, 1)) + " ")
+                if time_gap > 0:
+                    f.write(str(round(time_gap, 1)) + " ")
                 last_end_event = end_event
             f.write("\n")
         # print(f"[total comm time] {total_comm_time} {comm_times}")
