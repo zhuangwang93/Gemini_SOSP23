@@ -6,7 +6,7 @@
     "prescale_gradients": false,
     "gpt_config": {
         "max_position_embeddings": 514,
-        "num_attention_heads": 38,
+        "num_attention_heads": 40,
         "num_hidden_layers": 15,
         "hidden_size": 5120,
         "intermediate_size": 20480,
