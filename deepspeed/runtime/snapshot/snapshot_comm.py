@@ -277,11 +277,11 @@ class SnapshotOptimizer():
 
         _snapshot_torch_p2p_fn(input_tensor, output_tensor, self.snapshot_group)
         # _snapshot_torch_p2p_fn(input_tensor, output_tensor, self.snapshot_group)
-        # with torch.cuda.stream(self.checkpoint_copy_stream):
-        #     # snapshot_profiler.record_gpu_cpu_copy_start_time(self.checkpoint_copy_stream)
-        #     tensor_on_cpu = self.get_snapshot_block(block_id)
-        #     self.move_to_cpu(output_tensor, tensor_on_cpu)
-        #     #snapshot_profiler.record_gpu_cpu_copy_end_time(self.checkpoint_copy_stream)
+        with torch.cuda.stream(self.checkpoint_copy_stream):
+            # snapshot_profiler.record_gpu_cpu_copy_start_time(self.checkpoint_copy_stream)
+            tensor_on_cpu = self.get_snapshot_block(block_id)
+            self.move_to_cpu(output_tensor, tensor_on_cpu)
+            #snapshot_profiler.record_gpu_cpu_copy_end_time(self.checkpoint_copy_stream)
 
 
     def set_allgather_stream(self, stream):

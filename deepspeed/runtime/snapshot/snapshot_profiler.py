@@ -253,5 +253,5 @@ class CommounicationProfiler():
                 f.write(str(round(time_gap, 1)) + " ")
                 last_end_event = end_event
             f.write("\n")
-        print(f"[total comm time] {total_comm_time} {comm_times}")
+        # print(f"[total comm time] {total_comm_time} {comm_times}")
         self.reset_comm_event()
