@@ -114,6 +114,7 @@ class SnapshotOptimizer():
         self.checkpoint_copy_stream = Stream()
         self.allgather_stream = None
         self.reducescatter_stream = None
+        self.allgather_gap_num = -1
 
 
     def set_checkpoint_setup(self, args):
@@ -320,11 +321,11 @@ class SnapshotOptimizer():
             else:
                 for _ in range(blocks):
                     self.snapshot_block()
-        # self.checkpoint_comm_stream.synchronize()
-        self.reducescatter_stream.wait_stream(self.checkpoint_comm_stream)
-        # stream.wait_stream(self.checkpoint_comm_stream)
+        if self.comm_gap_id == self.allgather_gap_num:
+            self.reducescatter_stream.wait_stream(self.checkpoint_comm_stream)
+        else:
+            stream.wait_stream(self.checkpoint_comm_stream)
         
-
 
     def snapshot_block(self):
         tensor = self.snapshot_blocks[self.cur_block_id]
@@ -384,10 +385,11 @@ class SnapshotOptimizer():
             self.init_snapshot_comm_groups()
             self.tensor_block_size = self.snapshot_buffer_size
             self.init_optimizer_state_on_cpu(optimizer_state)
-            snapshot_strategy = self.compute_snapshot_strategy()
+            snapshot_strategy, allgather_gap_num = self.compute_snapshot_strategy()
             self.snapshot_strategy = _snapshot_broadcast_obj(snapshot_strategy, self.this_rank, src=self.profile_rank)
+            self.allgather_gap_num = _snapshot_broadcast_obj(allgather_gap_num, self.this_rank, src=self.profile_rank)
             torch.cuda.synchronize()
-            logger.info(f"[Rank {self.this_rank}] snapshot strategy: {self.snapshot_strategy}")
+            logger.info(f"[Rank {self.this_rank}] snapshot strategy: {self.snapshot_strategy}, {self.allgather_gap_num}")
             self.extract_states_for_snapshot()
 
         # self.update_optimizer_state_dict(optimizer_state)
@@ -404,7 +406,7 @@ class SnapshotOptimizer():
             snapshot_strategy = SnapshotStrategy(filename, threshold=self.span_threshold, jump_lines=self.jump_profile_lines, alpha=self.span_alpha)
             return snapshot_strategy.get_snapshot_strategy(self.block_sizes[0], self.bandwidth, self.local_size, self.max_blocks_in_span)
         else:
-            return None
+            return None, None
 
 
     def latest_completed_snapshot_version(self):

@@ -9,6 +9,7 @@ class SnapshotStrategy():
         self.threshold = threshold
         self.jump_lines = jump_lines
         self.alpha = alpha
+        self.allgather_op_num = -1
         self.extract_data()
 
 
@@ -25,7 +26,10 @@ class SnapshotStrategy():
                 for i, gap in enumerate(gaps):
                     if i not in self.gaps:
                         self.gaps[i] = []
-                    if len(gap) > 0:
+                    # we use "-" to distinguish gaps in allgather and reducescatter
+                    if gap == "-":
+                        self.allgather_op_num = i
+                    else:
                         self.gaps[i].append(float(gap))
 
     
@@ -87,7 +91,7 @@ class SnapshotStrategy():
             # TODO: if strategy[last_gap] = -1,
             # how to set the snapshot frequency to amortize the overhead?
 
-        return strategy
+        return strategy, self.allgather_op_num
 
 
     def plots(self):

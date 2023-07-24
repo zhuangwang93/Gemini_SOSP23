@@ -152,7 +152,7 @@ class SnapshotProfiler():
 
 
 class CommounicationProfiler():
-    def __init__(self, dir="snapshot_strategy", filename="comm_gap.txt"):
+    def __init__(self, refresh=True, dir="snapshot_strategy", filename="comm_gap.txt"):
         self.start_allgather_events = []
         self.end_allgather_events = []
 
@@ -161,8 +161,9 @@ class CommounicationProfiler():
 
         os.makedirs(dir, exist_ok=True)
         self.filename = os.path.join(dir, filename)
-        with open(self.filename, 'w') as f:
-            f.write("")
+        if refresh:
+            with open(self.filename, 'w') as f:
+                f.write("")
 
 
     def add_start_allgather_event(self, event):
@@ -233,6 +234,7 @@ class CommounicationProfiler():
                     total_comm_time += comm_time
                     last_end_event = end_event
 
+            f.write("- ")
             # # reducescatter event
             # comm_times.append("reducescatter:")
 
