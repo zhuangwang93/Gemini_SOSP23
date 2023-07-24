@@ -1,13 +1,13 @@
 {
     "help": "5B config",
     "gradient_accumulation_steps": 1,
-    "train_micro_batch_size_per_gpu": 24,
+    "train_micro_batch_size_per_gpu": 32,
     "steps_per_print": 1,
     "prescale_gradients": false,
     "gpt_config": {
         "max_position_embeddings": 514,
         "num_attention_heads": 40,
-        "num_hidden_layers": 15,
+        "num_hidden_layers": 14,
         "hidden_size": 5120,
         "intermediate_size": 20480,
         "gradient_checkpointing": true,
@@ -17,7 +17,7 @@
     "zero_optimization": {
         "stage": 3,
         "stage3_prefetch_bucket_size": 1e9,
-        "reduce_bucket_size": 4e9
+        "reduce_bucket_size": 2e9
     },
     "optimizer": {
         "type": "Adam",
