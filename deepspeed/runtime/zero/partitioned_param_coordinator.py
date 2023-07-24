@@ -407,12 +407,13 @@ class PartitionedParameterCoordinator:
                 end.record(stream=self.__allgather_stream)
                 # use stream.synchronize() for accurate profiling. 
                 # We observe that stream.synchronize() can improve the iteration time
-                # self.__allgather_stream.synchronize()
+                self.__allgather_stream.synchronize()
                 comm_profiler.add_start_allgather_event(start)
                 comm_profiler.add_end_allgather_event(end)
                 
             if snapshot_settings.is_snapshot_mode():
                 from deepspeed.runtime.snapshot.snapshot_comm import cpu_snapshot
+                cpu_snapshot.set_allgather_stream(self.__allgather_stream)
                 cpu_snapshot.remote_snapshot(handle.get_handle(), self.__allgather_stream)
 
             for param in partitioned_params:

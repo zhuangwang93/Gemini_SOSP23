@@ -1187,6 +1187,7 @@ class DeepSpeedZeroOptimizer_Stage3(ZeROOptimizer):
 
         if snapshot_settings.is_snapshot_mode():
             from deepspeed.runtime.snapshot.snapshot_comm import cpu_snapshot
+            cpu_snapshot.set_reducescatter_stream(self.__reduce_and_partition_stream)
             cpu_snapshot.remote_snapshot(handle, self.__reduce_and_partition_stream)
 
         return grad_partitions_for_rank

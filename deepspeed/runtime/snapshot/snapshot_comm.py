@@ -111,6 +111,8 @@ class SnapshotOptimizer():
         self.local_optimizer_state_dict = None
         self.checkpoint_comm_stream = Stream()
         self.checkpoint_copy_stream = Stream()
+        self.allgather_stream = None
+        self.reducescatter_stream = None
 
 
     def set_checkpoint_setup(self, args):
@@ -280,6 +282,16 @@ class SnapshotOptimizer():
         #     #snapshot_profiler.record_gpu_cpu_copy_end_time(self.checkpoint_copy_stream)
 
 
+    def set_allgather_stream(self, stream):
+        if not self.allgather_stream:
+            self.allgather_stream = stream
+
+
+    def set_reducescatter_stream(self, stream):
+        if not self.reducescatter_stream:
+            self.reducescatter_stream = stream
+
+
     def remote_snapshot(self, event=None, stream=None):
         if self.is_snapshot_step():
             if self.snapshot_mode == "interleave" and self.comm_gap_id in self.snapshot_strategy:
@@ -293,6 +305,7 @@ class SnapshotOptimizer():
         if blocks == -1:
             # snapshot the all the left blocks
             blocks = self.total_blocks - self.cur_block_id
+            print(f"{blocks} blocks in the last span")
             return
 
         with torch.cuda.stream(self.checkpoint_comm_stream):
@@ -309,7 +322,8 @@ class SnapshotOptimizer():
             end_event = torch.cuda.Event(enable_timing=False)
             end_event.record(stream=self.checkpoint_comm_stream)
             end_event.wait(stream=stream)
-        stream.wait_stream(self.checkpoint_comm_stream)
+        self.reducescatter_stream.wait_stream(self.checkpoint_comm_stream)
+        # stream.wait_stream(self.checkpoint_comm_stream)
         
 
 
@@ -387,6 +401,7 @@ class SnapshotOptimizer():
             from .snapshot_global_variables import comm_profiler
             from .snapshot_strategy import SnapshotStrategy
             filename = comm_profiler.get_profile_filename()
+            print("compute_snapshot_strategy", filename)
             snapshot_strategy = SnapshotStrategy(filename, threshold=self.span_threshold, jump_lines=self.jump_profile_lines, alpha=self.span_alpha)
             return snapshot_strategy.get_snapshot_strategy(self.block_sizes[0], self.bandwidth, self.local_size, self.max_blocks_in_span)
         else:
