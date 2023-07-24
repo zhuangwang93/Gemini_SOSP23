@@ -1,12 +1,12 @@
 {
     "help": "5B config",
     "gradient_accumulation_steps": 1,
-    "train_micro_batch_size_per_gpu": 32,
+    "train_micro_batch_size_per_gpu": 24,
     "steps_per_print": 1,
     "prescale_gradients": false,
     "gpt_config": {
         "max_position_embeddings": 514,
-        "num_attention_heads": 40,
+        "num_attention_heads": 38,
         "num_hidden_layers": 15,
         "hidden_size": 5120,
         "intermediate_size": 20480,
