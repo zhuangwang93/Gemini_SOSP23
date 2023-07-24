@@ -17,7 +17,7 @@
     "zero_optimization": {
         "stage": 3,
         "stage3_prefetch_bucket_size": 1e9,
-        "reduce_bucket_size": 2e9
+        "reduce_bucket_size": 4e9
     },
     "optimizer": {
         "type": "Adam",
