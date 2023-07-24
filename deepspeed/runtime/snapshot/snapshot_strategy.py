@@ -23,14 +23,17 @@ class SnapshotStrategy():
                     continue
 
                 gaps = line.strip().split(" ")
-                for i, gap in enumerate(gaps):
-                    if i not in self.gaps:
-                        self.gaps[i] = []
+                print("extract_data", gaps)
+                pos = 0
+                for gap in gaps:
+                    if pos not in self.gaps:
+                        self.gaps[pos] = []
                     # we use "-" to distinguish gaps in allgather and reducescatter
                     if gap == "-":
-                        self.allgather_op_num = i
+                        self.allgather_op_num = pos
                     else:
-                        self.gaps[i].append(float(gap))
+                        self.gaps[pos].append(float(gap))
+                        pos += 1
 
     
     def get_valid_gaps(self):
