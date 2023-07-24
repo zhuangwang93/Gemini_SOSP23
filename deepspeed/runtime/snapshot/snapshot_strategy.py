@@ -23,7 +23,6 @@ class SnapshotStrategy():
                     continue
 
                 gaps = line.strip().split(" ")
-                print("extract_data", gaps)
                 pos = 0
                 for gap in gaps:
                     if pos not in self.gaps:

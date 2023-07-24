@@ -295,7 +295,7 @@ class SnapshotOptimizer():
 
     def remote_snapshot(self, event=None, stream=None):
         if self.is_snapshot_step():
-            if self.snapshot_mode == "interleave" and self.comm_gap_id in self.snapshot_strategy:
+            if self.snapshot_mode == "interleave" and self.comm_gap_id in self.snapshot_strategy and self.comm_gap_id == 76:
                 blocks = self.snapshot_strategy[self.comm_gap_id]
                 self.remote_snapshot_blocks(blocks, event, stream)
             self.comm_gap_id += 1
