@@ -104,7 +104,8 @@ class SnapshotOptimizer():
         self.snapshot_gpu_buffer_id = 0
         self.cur_block_id = 0
         self.total_blocks = 0
-        self.comm_gap_id = 0
+        # TODO: need to just the first gap, have no clue
+        self.comm_gap_id = -1
         self.snapshot_mode = "naive"
         self.have_set_snapshot_strategy = False
         self.snapshot_strategy = dict()
@@ -294,8 +295,8 @@ class SnapshotOptimizer():
 
     def remote_snapshot(self, event=None, stream=None):
         if self.is_snapshot_step():
-            if self.snapshot_mode == "interleave" and self.comm_gap_id - 1 in self.snapshot_strategy:
-                blocks = self.snapshot_strategy[self.comm_gap_id - 1]
+            if self.snapshot_mode == "interleave" and self.comm_gap_id in self.snapshot_strategy:
+                blocks = self.snapshot_strategy[self.comm_gap_id]
                 self.remote_snapshot_blocks(blocks, event, stream)
             self.comm_gap_id += 1
 
@@ -319,9 +320,6 @@ class SnapshotOptimizer():
             else:
                 for _ in range(blocks):
                     self.snapshot_block()
-            # end_event = torch.cuda.Event(enable_timing=False)
-            # end_event.record(stream=self.checkpoint_comm_stream)
-            # end_event.wait(stream=stream)
         # self.checkpoint_comm_stream.synchronize()
         self.reducescatter_stream.wait_stream(self.checkpoint_comm_stream)
         # stream.wait_stream(self.checkpoint_comm_stream)
@@ -370,7 +368,7 @@ class SnapshotOptimizer():
     def update_local_optimizer_snapshot(self, optimizer_state): 
         self.local_optimizer_state_dict = optimizer_state
         self.step_cnt += 1
-        self.comm_gap_id = 0
+        self.comm_gap_id = -1
         self.reset_cpu_buffer()
 
         if self.snapshot_mode == "naive" and not self.have_set_snapshot_strategy:
