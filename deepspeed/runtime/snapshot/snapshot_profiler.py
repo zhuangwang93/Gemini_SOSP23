@@ -161,8 +161,8 @@ class CommounicationProfiler():
 
         os.makedirs(dir, exist_ok=True)
         self.filename = os.path.join(dir, filename)
-        # with open(self.filename, 'w') as f:
-        #     f.write("")
+        with open(self.filename, 'w') as f:
+            f.write("")
 
 
     def add_start_allgather_event(self, event):
