@@ -322,6 +322,7 @@ class SnapshotOptimizer():
             # end_event = torch.cuda.Event(enable_timing=False)
             # end_event.record(stream=self.checkpoint_comm_stream)
             # end_event.wait(stream=stream)
+        self.checkpoint_comm_stream.synchronize()
         self.reducescatter_stream.wait_stream(self.checkpoint_comm_stream)
         # stream.wait_stream(self.checkpoint_comm_stream)
         
