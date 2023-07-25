@@ -212,7 +212,7 @@ def main():
 
     cpu_snapshot, snapshot_settings, training_profiler, snapshot_profiler, comm_profiler = set_snapshot_settings(args)
     
-    tokenizer = BertTokenizerFast.from_pretrained("bert-base")
+    tokenizer = BertTokenizerFast.from_pretrained("bert-base-uncased")
     print_at_rank0(f'tokenizer vocab_size {tokenizer.vocab_size}'
             f' config vocab size {args.config["bert_config"]["vocab_size"]}')
     assert tokenizer.vocab_size <= args.config["bert_config"]["vocab_size"]
