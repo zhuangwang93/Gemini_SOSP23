@@ -3,7 +3,7 @@
     "train_micro_batch_size_per_gpu": 8,
     "steps_per_print": 1,
     "prescale_gradients": false,
-    "roberta_config": {
+    "bert_config": {
         "max_position_embeddings": 512,
         "type_vocab_size": 1,
         "num_attention_heads": 40,
