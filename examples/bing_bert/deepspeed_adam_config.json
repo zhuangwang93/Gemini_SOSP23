@@ -1,5 +1,5 @@
 {
-  "train_micro_batch_size_per_gpu": 8,
+  "train_micro_batch_size_per_gpu": 32,
   "gradient_accumulation_steps": 1,
   "optimizer": {
     "type": "Adam",
@@ -12,6 +12,6 @@
   },
   "zero_optimization": {
     "stage": 3,
-    "reduce_bucket_size": 2e9
+    "reduce_bucket_size": 3e9
   }
 }
