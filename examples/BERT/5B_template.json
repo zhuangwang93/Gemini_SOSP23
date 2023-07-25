@@ -1,0 +1,39 @@
+{
+    "help": "5B config",
+    "gradient_accumulation_steps": 1,
+    "train_micro_batch_size_per_gpu": 32,
+    "steps_per_print": 1,
+    "prescale_gradients": false,
+    "roberta_config": {
+        "max_position_embeddings": 512,
+        "type_vocab_size": 1,
+        "num_attention_heads": 40,
+        "num_hidden_layers": 14,
+        "hidden_size": 5120,
+        "intermediate_size": 20480,
+        "gradient_checkpointing": true,
+        "vocab_size": 50265
+    },
+    "zero_optimization": {
+        "stage": 3,
+        "reduce_bucket_size": 3e9
+    },
+    "zero_allow_untested_optimizer": true,
+    "optimizer": {
+        "type": "Adam",
+        "params": {
+            "lr": 0.0001,
+            "weight_decay": 0.01,
+            "bias_correction": true,
+            "eps": 1e-06
+        }
+    },
+    "gradient_clipping": 1.0,
+    "wall_clock_breakdown": false,
+    "fp16": {
+        "enabled": true,
+        "loss_scale": 0,
+        "initial_scale_power": 20,
+        "loss_scale_window": 1000
+    }
+}

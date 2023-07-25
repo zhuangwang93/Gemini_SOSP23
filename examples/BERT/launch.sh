@@ -1,12 +1,12 @@
 #!/bin/bash
 
-HOSTFILE=hostfile
-TRAIN_SCRIPT=pretrain_roberta.py
+HOSTFILE=../hostfile
+TRAIN_SCRIPT=pretrain_bert.py
 TRAIN_CONFIG="
-roberta_template.json
+5B_template.json
 "
 
-JOB_NAME=Roberta
+JOB_NAME=bert
 OUTPUT_DIR="./${JOB_NAME}"
 
 common_args="\
@@ -21,7 +21,7 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --deepspeed \
 --deepspeed_config $TRAIN_CONFIG \
 --job_name ${JOB_NAME} \
--max_steps 20 \
+--max_steps 20 \
 --print_steps 1 \
 --output . \
 --comm_profile_steps 12 \
@@ -33,11 +33,9 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --span_threshold 100 \
 --span_alpha 0.8 \
 --max_blocks_in_span 16 \
---load_training_checkpoint saved_models/${JOB_NAME} \
---load_checkpoint_id snapshot \
 # --pre_checkpoint \
 # --save_to_disk \
 "
 
 echo $ds_cmd
-eval $ds_cmd
+eval $ds_cmd | tee log_5B_interleave
