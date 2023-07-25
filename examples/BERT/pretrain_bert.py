@@ -177,7 +177,7 @@ def get_dataloader(args, tokenizer):
 
 
 def get_model(args) -> Module:
-    model_config = args.config['roberta_config']
+    model_config = args.config['bert_config']
 
     cfg = BertConfig(
         max_position_embeddings=model_config['max_position_embeddings'],
@@ -212,10 +212,10 @@ def main():
 
     cpu_snapshot, snapshot_settings, training_profiler, snapshot_profiler, comm_profiler = set_snapshot_settings(args)
     
-    tokenizer = BertTokenizerFast.from_pretrained("roberta-base")
+    tokenizer = BertTokenizerFast.from_pretrained("bert-base")
     print_at_rank0(f'tokenizer vocab_size {tokenizer.vocab_size}'
-            f' config vocab size {args.config["roberta_config"]["vocab_size"]}')
-    assert tokenizer.vocab_size <= args.config["roberta_config"]["vocab_size"]
+            f' config vocab size {args.config["bert_config"]["vocab_size"]}')
+    assert tokenizer.vocab_size <= args.config["bert_config"]["vocab_size"]
     # get data_loader
     training_dataloader = get_dataloader(args, tokenizer)
 
