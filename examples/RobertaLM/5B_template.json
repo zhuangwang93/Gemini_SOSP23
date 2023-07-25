@@ -16,7 +16,6 @@
     },
     "zero_optimization": {
         "stage": 3,
-        "stage3_prefetch_bucket_size": 1e9,
         "reduce_bucket_size": 3e9
     },
     "zero_allow_untested_optimizer": true,
