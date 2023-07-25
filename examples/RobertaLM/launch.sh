@@ -1,12 +1,10 @@
 #!/bin/bash
 
-HOSTFILE=hostfile
+HOSTFILE=../hostfile
 TRAIN_SCRIPT=pretrain_roberta.py
 TRAIN_CONFIG="
-roberta_template.json
+5B_template.json
 "
-
-DATETIME=$(date +"%Y-%m-%d_%T")
 
 JOB_NAME=Roberta
 OUTPUT_DIR="./${JOB_NAME}"
@@ -23,20 +21,21 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --deepspeed \
 --deepspeed_config $TRAIN_CONFIG \
 --job_name ${JOB_NAME} \
---max_steps 32 \
+--max_steps 20 \
 --print_steps 1 \
 --output . \
---snapshot_mode interleave \
---comm_profile_steps 24 \
+--comm_profile_steps 12 \
+--jump_profile_lines 8 \
 --enable_comm_profile \
---network_bandwidth 150 \
+--snapshot_mode interleave \
+--network_bandwidth 80 \
 --snapshot_buffer_size 32 \
---span_threshold 10 \
---span_alpha 0.6 \
---max_blocks_in_span 8 \
+--span_threshold 100 \
+--span_alpha 0.8 \
+--max_blocks_in_span 16 \
 # --pre_checkpoint \
 # --save_to_disk \
 "
 
 echo $ds_cmd
-eval $ds_cmd
+eval $ds_cmd | tee log_5B_interleave
