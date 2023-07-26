@@ -21,10 +21,10 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --deepspeed \
 --deepspeed_config $TRAIN_CONFIG \
 --job_name ${JOB_NAME} \
---max_steps 20 \
+--max_steps 30 \
 --print_steps 1 \
 --output . \
---comm_profile_steps 12 \
+--comm_profile_steps 18 \
 --jump_profile_lines 8 \
 --enable_comm_profile \
 --snapshot_mode interleave \
