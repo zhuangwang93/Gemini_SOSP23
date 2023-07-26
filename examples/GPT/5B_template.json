@@ -1,7 +1,7 @@
 {
     "help": "5B config",
     "gradient_accumulation_steps": 1,
-    "train_micro_batch_size_per_gpu": 32,
+    "train_micro_batch_size_per_gpu": 24,
     "steps_per_print": 1,
     "prescale_gradients": false,
     "gpt_config": {

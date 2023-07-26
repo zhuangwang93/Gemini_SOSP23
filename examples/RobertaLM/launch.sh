@@ -29,13 +29,13 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --enable_comm_profile \
 --snapshot_mode interleave \
 --network_bandwidth 80 \
---snapshot_buffer_size 32 \
+--snapshot_buffer_size 16 \
 --span_threshold 100 \
 --span_alpha 0.8 \
---max_blocks_in_span 16 \
-# --pre_checkpoint \
+--max_blocks_in_span 32 \
 # --save_to_disk \
+# --pre_checkpoint \
 "
 
 echo $ds_cmd
-eval $ds_cmd | tee log_5B_interleave
+eval $ds_cmd | tee log_5B

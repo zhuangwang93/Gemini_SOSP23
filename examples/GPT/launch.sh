@@ -33,9 +33,9 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --span_threshold 100 \
 --span_alpha 0.8 \
 --max_blocks_in_span 16 \
-# --enable_snapshot_profile \
 # --save_to_disk \
+# --enable_snapshot_profile \
 "
 
 echo $ds_cmd
-eval $ds_cmd | tee log_5B_interleave
+eval $ds_cmd | tee log_5B
