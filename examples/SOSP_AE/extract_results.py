@@ -41,7 +41,7 @@ def extract_all_models(models):
 
 
 
-def plot_iteration_time(results, jump_lines=10, ds_lines=2):
+def plot_iteration_time(results, jump_lines=10, ds_lines=18):
     params = {'legend.fontsize': 22, 'font.size': 26}
     plt.rcParams.update(params)
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -54,11 +54,11 @@ def plot_iteration_time(results, jump_lines=10, ds_lines=2):
 
     for key, values in results.items():
         step_times = values["step_times"]
-        ds_times = step_times[jump_lines: jump_lines + ds_lines]
+        ds_times = step_times[jump_lines: ds_lines]
         ds.append(np.mean(ds_times))
         ds_err.append(np.std(ds_times))
 
-        gemini_times = step_times[jump_lines + ds_lines + 1: ]
+        gemini_times = step_times[ds_lines + 2: ]
         gemini.append(np.mean(gemini_times))
         gemini_err.append(np.std(gemini_times))
 
@@ -123,5 +123,5 @@ def plot_idle_time(results):
 if __name__ == "__main__":
     models = ["GPT", "BERT", "RobertaLM"]
     results = extract_all_models(models)
-    plot_iteration_time(results)
+    plot_iteration_time(results, jump_lines=8, ds_lines=18)
     plot_idle_time(results)

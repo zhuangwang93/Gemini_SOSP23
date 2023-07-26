@@ -62,7 +62,7 @@ class SnapshotStrategy():
 
     def get_snapshot_strategy(self, block_sizes, bandwidth, local_rank_size, max_blocks=2):
         valid_gaps = self.get_valid_comm_idle_time()
-        print(f"idel time: {self.get_comm_idle_time()}, valid gaps: {valid_gaps}")
+        print(f"idle time: {self.get_comm_idle_time()}, valid gaps: {valid_gaps}")
         print("block sizes:", block_sizes)
         strategy = {}
         for key in valid_gaps.keys():
