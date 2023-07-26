@@ -100,7 +100,7 @@ class SnapshotOptimizer():
         self.step_cnt = 0
         self.snapshot_versions = 2
         self.snapshot_current_version = 0
-        self.snapshot_gpu_versions = 4
+        self.snapshot_gpu_versions = 2
         self.snapshot_gpu_buffer_id = 0
         self.cur_block_id = 0
         self.total_blocks = 0
@@ -306,7 +306,6 @@ class SnapshotOptimizer():
         if blocks == -1:
             # snapshot the all the left blocks
             blocks = self.total_blocks - self.cur_block_id
-            print(f"{blocks} blocks in the last span")
             return
 
         with torch.cuda.stream(self.checkpoint_comm_stream):
