@@ -35,8 +35,8 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --max_blocks_in_span 16 \
 --load_training_checkpoint saved_models/${JOB_NAME} \
 --load_checkpoint_id snapshot \
+--save_to_disk \
 # --pre_checkpoint \
-# --save_to_disk \
 "
 
 echo $ds_cmd

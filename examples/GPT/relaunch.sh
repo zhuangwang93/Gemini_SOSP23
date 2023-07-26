@@ -35,9 +35,9 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --span_alpha 0.6 \
 --max_blocks_in_span 4 \
 --pre_checkpoint \
---load_training_checkpoint saved_models/GPT2 \
+--load_training_checkpoint saved_models/${JOB_NAME} \
 --load_checkpoint_id snapshot \
-# --save_to_disk \
+--save_to_disk \
 "
 
 echo $ds_cmd

@@ -33,7 +33,7 @@ ${deepspeed} --hostfile=${HOSTFILE} ${TRAIN_SCRIPT} \
 --span_threshold 100 \
 --span_alpha 0.8 \
 --max_blocks_in_span 16 \
-# --save_to_disk \
+--save_to_disk \
 # --enable_snapshot_profile \
 "
 
