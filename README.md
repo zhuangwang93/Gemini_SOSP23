@@ -1,9 +1,9 @@
 [![License MIT](https://badgen.net/badge/license/MIT/blue)](https://github.com/Microsoft/DeepSpeed/blob/master/LICENSE)
 
 
-# Artifact Evaluation of 
+# Artifact Evaluation of GEMINI
 
-This repository contains the system code and scripts that help run the  experiments from our SOSP '23 paper.
+This repository contains the system code and scripts that help run the experiments from our SOSP '23 GEMINI paper.
 
 
 ## Prerequisites
@@ -16,7 +16,7 @@ This repository contains the system code and scripts that help run the  experime
 
 ## Machines
 
-All the experiments in the main body of GEMINI paper are conducted on 16 AWS p4d.24xlarge instances with 128 A100 GPUs. The number of parameters in the evaluated models are 100 billion. The network bandwidth connecting machines is 400Gbps.
+All the experiments in the main body of GEMINI paper are conducted on 16 AWS p4d.24xlarge instances with 128 A100 GPUs. The number of parameters in the evaluated models is 100 billion. The network bandwidth connecting machines is 400Gbps.
 However, we don't expect that the AEC members can have access to such a large number of GPUs to fit these 100B models.
 Therefore, we aim at minimal working examples with all models of 5 billion parameters in this AE.
 AEC members can use 32 V100 GPUs in 4 AWS p3dn.24xlarge instances with auto scaling group (ASG) for the model training.
@@ -36,7 +36,7 @@ pip3 install -e .
 pip3 install transformers -U 
 ```
 
-## Code structure
+## Code Structure
 
 GEMINI is built upon DeepSpeed and its main code is under [snapshot](deepspeed/runtime/snapshot/). The examples to run GEMINI are under [examples](examples/). The scripts to run the artifact evaluation are under [SOSP_AE](examples/SOSP_AE).
 
@@ -68,7 +68,7 @@ bash launch.sh
 
 ### The main claim
 
-Our claim of this paper is: `GEMINI can checkpoint the model states for every iteration and it incurs negligible overhead on the training throughput`.
+The main claim of this paper is: `GEMINI can checkpoint the model states for every iteration and it incurs negligible overhead on the training throughput`.
 The figures that can demonstrate this claim are Figure 7 (iteration time) and Figure 8 (the network idle time). 
 
 ```bash
@@ -84,7 +84,7 @@ Because of the different experimental settings, the absolute values in these fig
 But you will see that the iteration time is almost the same without checkpoints and with GEMINI for checkpointing.
 You can also set `--snapshot_mode` to `naive` from `interleave` to see how traffic blocking for checkpointing affects the iteration time if interested.
 
-### Simulation data
+### Ablation study
 
 The data collected in Figure 9, Figure 11, Figure 13, and Figure 14 are from simulations. We also provide the simulation code in AE_figures.ipynb. 
 You can play with them if interested. The figures will be automatically generated.
