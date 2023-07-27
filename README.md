@@ -31,8 +31,8 @@ Install the code on each machine before running any experiments. Please make sur
 If AEC members directly use our machines for the evaluation, we will have all dependencies pre-installed on all machines.
 
 ```bash
-git clone https://github.com/zhuangwang93/SOSP_AE.git
-cd SOSP_AE
+git clone https://github.com/zhuangwang93/SOSP-30_AE.git
+cd SOSP-30_AE
 pip3 install -e .
 pip3 install transformers -U 
 ```
