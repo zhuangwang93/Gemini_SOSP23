@@ -77,7 +77,7 @@ def plot_iteration_time(results, jump_lines=10, ds_lines=18):
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     plt.legend(loc=2, bbox_to_anchor=(0.0, 1.0), frameon=True)
     plt.show()
-    plt.savefig("iter.png")
+    plt.savefig("Figure_7_iter.png")
 
 
 
@@ -117,7 +117,7 @@ def plot_idle_time(results):
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     plt.legend(loc=2, ncol=1, frameon=True, bbox_to_anchor=(0.00, 1.02))
     plt.show()
-    plt.savefig("idle_time.png")
+    plt.savefig("Figure_8_idle_time.png")
 
 
 if __name__ == "__main__":

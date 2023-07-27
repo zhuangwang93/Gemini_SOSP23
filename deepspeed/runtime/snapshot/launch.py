@@ -30,6 +30,7 @@ class TraingLaunch():
 
     def generate_hostfile(self, filename="hostfile"):
         filename = os.path.join(self.example_dir, "hostfile")
+        print(self.ips_list)
         with open(filename, 'w') as f:
             for ip in self.ips_list:
                 f.write(f"{ip} slots={self.gpus_per_instance}\n")
@@ -39,6 +40,10 @@ class TraingLaunch():
         self.set_etcd_hosts(num)
         # TODO: detect if etcd has been running
         self.start_etcd(num)
+
+
+    def run_etcd_from_ips(self, ips):
+        self.start_etcd_from_ips(ips)
 
 
     def set_etcd_hosts(self, num):
@@ -78,6 +83,41 @@ class TraingLaunch():
             print(etcd_command)
             run_etcd_command = f"ssh -T {host} '{etcd_command}'"
             subprocess.Popen(run_etcd_command, shell=True)
+            logger.info("***************************")
+            logger.info(f"Start etcd on host {THIS_IP}...")
+
+
+    def start_etcd_from_ips(self, ips):
+        REGISTRY = "gcr.io/etcd-development/etcd"
+        ETCD_VERSION = "latest"
+        TOKEN = "my-etcd-token"
+        CLUSTER_STATE="new"
+        ips = ips.strip().split(" ")
+        num = len(ips)
+        names = ["etcd-node-"+str(i) for i in range(num)]
+        CLUSTER = ""
+        for name, host in zip(names, ips):
+            CLUSTER += f"{name}=http://{host}:2380,"
+        print(CLUSTER)
+        DATA_DIR = "etcd-data"
+
+        for name, host in zip(names, ips):
+            THIS_NAME = name
+            THIS_IP = host
+
+            etcd_command = f"""
+                docker volume create --name {DATA_DIR}; \
+                docker run --rm -d -p 2379:2379 -p 2380:2380 -v {DATA_DIR}:/etcd-data \
+                    --name etcd_container {REGISTRY}:{ETCD_VERSION} \
+                    etcd --data-dir=/etcd-data --name {THIS_NAME} \
+                    --initial-advertise-peer-urls http://{THIS_IP}:2380 --listen-peer-urls http://0.0.0.0:2380 \
+                    --advertise-client-urls http://{THIS_IP}:{self.etcd_port} --listen-client-urls http://0.0.0.0:{self.etcd_port} \
+                    --initial-cluster {CLUSTER} \
+                    --initial-cluster-state {CLUSTER_STATE} --initial-cluster-token {TOKEN}
+            """
+            print(etcd_command)
+            # run_etcd_command = f"ssh -T {host} '{etcd_command}'"
+            # subprocess.Popen(run_etcd_command, shell=True)
             logger.info("***************************")
             logger.info(f"Start etcd on host {THIS_IP}...")
         
@@ -158,6 +198,8 @@ if __name__ == "__main__":
                         help='number of instances')
     parser.add_argument('--etcd-clients', '-c', type=int, default=1,
                         help='number of etcd clients')
+    parser.add_argument('--etcd-ips', '-p', type=str, 
+                        help='the ips of etcd clients')
     parser.add_argument('--gpus_per_instance', '-g', type=int, default=8,
                         help='number of GPUs in each instance')
     parser.add_argument('--example-dir', '-e', type=str, default=os.path.expanduser('~/zhuang/Gemini/examples'),
@@ -174,6 +216,8 @@ if __name__ == "__main__":
         sync_code(launch_agent.get_ips_list(), mode = "sync")
     elif args.mode == "etcd":
         launch_agent.run_etcd(args.etcd_clients)
+    elif args.mode == "etcd_ip":
+        launch_agent.run_etcd_from_ips(args.etcd_ips)
     elif args.mode == "start":
         launch_agent.generate_hostfile()
         launch_agent.set_etcd_hosts(args.etcd_clients)
@@ -183,4 +227,4 @@ if __name__ == "__main__":
     elif args.mode == "instances":
         launch_agent.generate_hostfile()
     else:
-        print("set the mode from ['init', 'sync', 'etcd', 'start', 'kill', 'instances']")
+        print("set the mode from ['init', 'sync', 'etcd', 'start', 'kill', 'instances', 'etcd_ip']")
