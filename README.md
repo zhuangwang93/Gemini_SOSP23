@@ -3,7 +3,7 @@
 
 # Artifact Evaluation of GEMINI
 
-This repository contains the system code and scripts that help run the experiments from our SOSP '23 GEMINI paper.
+This repository contains the system code and scripts that help run the experiments of our SOSP '23 GEMINI paper.
 
 
 ## Prerequisites
