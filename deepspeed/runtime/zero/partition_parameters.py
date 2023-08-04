@@ -871,6 +871,7 @@ class Init(InsertPostInitMethodToModuleSubClasses):
                 handle = _dist_allgather_fn(partitions[self.rank],
                                             flat_tensor,
                                             self.ds_process_group)
+              
                 return AllGatherCoalescedHandle(
                     allgather_handle=handle,
                     params=params,
