@@ -14,6 +14,7 @@ This repository contains the system code and scripts that help run the experimen
 - NCCL >= 2.14.3
 - etcd == 3.5
 - Auto Scaling Group in AWS
+- OS: Linux and other OS supported by DeepSpeed
 
 ## Machines
 
