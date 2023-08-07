@@ -52,6 +52,8 @@ pip3 install transformers -U
 You can follow the instructions for evaluations if you'd like to run the code on your machines.
 
 ```bash
+# Note: the path under our testbed is ~/zhuang/Gemini
+# cd SOSP-30_AE
 # Step 1: replace the IP addresses of the machines in examples/hostfile. 
 # If you are using ASG for the instances, you can also automatically set the IP addresses with
 cd deepspeed/runtime/snapshot
@@ -66,7 +68,7 @@ python3 launch -m etcd_ip --etcd-ips "IP1"
 
 # Step 3: run the model script.
 # Note that we also provide a script to run all experiments with one command in the next section.
-cd deepspeed/examples/model_name
+cd examples/model_name
 bash launch.sh
 ```
 
@@ -80,7 +82,8 @@ bash launch.sh
 The figures that can demonstrate this claim are Figure 7 (iteration time) and Figure 8 (the network idle time). 
 
 ```bash
-cd deepspeed/examples/SOSP_AE
+# Note: the path under our testbed is ~/zhuang/Gemini/examples/SOSP_AE
+cd examples/SOSP_AE
 # It will take about 30 min to finish the experiments of the three models.
 bash run_all.sh
 ```
