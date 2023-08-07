@@ -68,6 +68,7 @@ python3 launch -m etcd_ip --etcd-ips "IP1"
 
 # Step 3: run the model script.
 # Note that we also provide a script to run all experiments with one command in the next section.
+# Note: the path under our testbed is ~/zhuang/Gemini/examples/model_name
 cd examples/model_name
 bash launch.sh
 ```
