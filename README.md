@@ -57,14 +57,14 @@ You can follow the instructions for evaluations if you'd like to run the code on
 # Step 1: replace the IP addresses of the machines in examples/hostfile. 
 # If you are using ASG for the instances, you can also automatically set the IP addresses with
 cd deepspeed/runtime/snapshot
-python3 launch -m instances
+python3 launch.py -m instances
 
 # Step 2: start etcd as the distributed key-value store
 cd deepspeed/runtime/snapshot
 # If you are using ASG for the instances (strongly recommended), you can start etcd with
-python3 launch -m etcd
+python3 launch.py -m etcd
 # Otherwise.
-python3 launch -m etcd_ip --etcd-ips "IP1"
+python3 launch.py -m etcd_ip --etcd-ips "IP1"
 
 # Step 3: run the model script.
 # Note that we also provide a script to run all experiments with one command in the next section.
