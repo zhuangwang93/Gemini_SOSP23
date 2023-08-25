@@ -99,5 +99,5 @@ You can also set `--snapshot_mode` in launch.sh to `naive` from `interleave` to 
 
 ### Ablation study
 
-The data in Figure 9, Figure 11, Figure 13, and Figure 14 are collected from simulations. We also provide the simulation code in AE_figures.ipynb. 
+The data in Figure 9, Figure 11, and Figure 14 are collected from simulations. We also provide the simulation code in AE_figures.ipynb. 
 You can play with them and the figures will be automatically generated.
