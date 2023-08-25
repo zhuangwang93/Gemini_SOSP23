@@ -29,6 +29,10 @@ The number of parameters in models is around 5 billion. A larger model size migh
 ## Installation
 
 Install the code on each machine before running any experiments. Please make sure the machines can successfully install [DeepSpeed](https://github.com/microsoft/DeepSpeed).
+You can configure one machine and then use it as a template to initiate new machines in ASG. 
+The code needs to be installed at the exact same path on all machines. 
+
+
 If AEC members directly use our machines for the evaluation, we will have all dependencies pre-installed on all machines.
 
 ```bash
@@ -54,7 +58,7 @@ You can follow the instructions for evaluations if you'd like to run the code on
 ```bash
 # Note: the path under our testbed is ~/zhuang/Gemini
 # cd SOSP-30_AE
-# Step 1: replace the IP addresses of the machines in examples/hostfile. 
+# Step 1: replace the IP addresses of the machines in examples/hostfile, which follows the format of hostfile used in MPI. 
 # If you are using ASG for the instances, you can also automatically set the IP addresses with
 cd deepspeed/runtime/snapshot
 python3 launch.py -m instances
@@ -63,7 +67,7 @@ python3 launch.py -m instances
 cd deepspeed/runtime/snapshot
 # If you are using ASG for the instances (strongly recommended), you can start etcd with
 python3 launch.py -m etcd
-# Otherwise.
+# Otherwise, you can arbitrarily choose one machine from the machines involved in training to set up etcd by setting its IP address as IP1
 python3 launch.py -m etcd_ip --etcd-ips "IP1"
 
 # Step 3: run the model script.
