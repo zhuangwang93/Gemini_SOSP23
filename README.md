@@ -1,5 +1,9 @@
 [![License Apache 2.0](https://badgen.net/badge/license/apache2.0/blue)](https://github.com/Microsoft/DeepSpeed/blob/master/LICENSE)
 
+# Industry Adoption
+
+The In-Memory checkpointing approach has been adopted as [Local Checkpointing](https://nvidia.github.io/nvidia-resiliency-ext/checkpointing/local/index.html) in [NVIDIA Resiliency Extension](https://github.com/NVIDIA/nvidia-resiliency-ext). 
+
 
 # Artifact Evaluation of SOSP 2023 #30
 
